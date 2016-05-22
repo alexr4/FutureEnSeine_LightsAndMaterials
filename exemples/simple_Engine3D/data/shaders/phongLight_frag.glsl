@@ -46,7 +46,6 @@ vec3 ads(vec3 dir, vec3 color)
 	 h = normalize(v + s);
 	 intensity = max(0.0, dot(n, s));
 	}*/
-//
 	//return color * intensity * (ka + kd * max(dot(s, n), 0.0) + ks * pow(max(dot(r, v), 0.0), shininess));
 	return color * intensity * (ka + kd * max(dot(s, n), 0.0) + ks * pow(max(dot(h, n), 0.0), shininess));
 }

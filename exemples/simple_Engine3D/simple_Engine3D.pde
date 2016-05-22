@@ -19,10 +19,10 @@ void setup()
   size(1280, 720, P3D);
   cam = new PeasyCam(this, 0, 0, 0, 500);
   
-  cubemap = new CubeMap(0.5);
+  cubemap = new CubeMap(1.0);
   initMaterial();
   diffuseTex = loadImage("textures/diffuse.jpg");
-  poly = new   Icosahedron(2, 150, diffuseTex);
+  poly = new   Icosahedron(3, 150, diffuseTex);
 }
 
 void draw()

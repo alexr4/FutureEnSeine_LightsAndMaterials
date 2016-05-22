@@ -6,9 +6,9 @@ PShader diffuse;
 PShader normals;
 PShader position;
 PShader rim; //fresnel
-PShader phongLighting; //À corriger
-PShader phongLightingGamma; //À corriger
-PShader bump; //À corriger
+PShader phongLighting; 
+PShader phongLightingGamma; 
+PShader bump; //add directionnal light
 PShader displacement; 
 PShader iridescent;
 PShader environment;
@@ -59,14 +59,14 @@ void initMaterial()
   phongLightingGamma.set("emissive", 0.1, 0.1, 0.1);
   phongLightingGamma.set("shininess", 100.0);
 
-  /* bump = loadShader("shaders/bump_frag.glsl", "shaders/bump_vert.glsl");
+   bump = loadShader("shaders/bump_frag.glsl", "shaders/bump_vert.glsl");
    bump.set("kd", 1.0, 1.0, 1.0);
    bump.set("ka", 1.0, 1.0, 1.0);
    bump.set("ks", 1.0, 1.0, 1.0);
    bump.set("emissive", 0.1, 0.1, 0.1);
    bump.set("shininess", 100.0);
    bump.set("bumpmap", loadImage("textures/normalmap.jpg"));
-   bump.set("minNormalEmissive", 0.5);*/
+   bump.set("minNormalEmissive", 0.5);
 
   //displacement mapping;
   displacement = loadShader("shaders/displacement_frag.glsl", "shaders/displacement_vert.glsl");
@@ -90,7 +90,7 @@ void initMaterial()
   shaderList.add(rim);
   shaderList.add(phongLighting);
   shaderList.add(phongLightingGamma);
-  //shaderList.add(bump);
+  shaderList.add(bump);
   shaderList.add(displacement);
   shaderList.add(iridescent);
   shaderList.add(environment);
@@ -103,6 +103,7 @@ void material(PGraphics buffer)
 {
   if (state ==0)
   {
+      poly.icosahedron.setTexture(null);
     buffer.background(13);
     buffer.resetShader();
     //light Properties
@@ -130,11 +131,11 @@ void material(PGraphics buffer)
     {
       //rim.set("rimPower", norm(mouseX, 0, width));
     }
-    if (state == 9)
+    if (state == 10)
     {
       // displacement.set("displaceStrength", (float) mouseX);
     }
-    if(state == 11)
+    if(state == 12)
     {
       sendCameraMatrixTo(environment);
     }

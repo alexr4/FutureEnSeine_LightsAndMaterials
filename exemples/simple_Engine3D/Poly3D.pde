@@ -319,8 +319,8 @@ class Icosahedron {
   //Add vertex, normal, 
   void addVertex(PVector p, PVector n, PVector t) {
     positions.add(p);
-    //normals.add(n);
-    normals.add(PVector.sub(new PVector(), n).normalize());
+    normals.add(n);
+    //normals.add(PVector.sub(new PVector(), n).normalize());
     //invert texture Coordinate in order to place the image in the upside down
     t.y = map(t.y, 0, 1, 1, 0);
     t.x = map(t.x, 0, 1, 1, 0);
@@ -489,14 +489,18 @@ class Icosahedron {
     icosahedron.texture(tex);
     for (int i=0; i<positions.size(); i += 3) {
 
-      PVector a_ = positions.get(i).get();
-      PVector b_ = positions.get(i+1).get();
-      PVector c_ = positions.get(i+2).get();
+      PVector a_ = positions.get(i).copy();
+      PVector b_ = positions.get(i+1).copy();
+      PVector c_ = positions.get(i+2).copy();
       PVector origine = new PVector(0, 0, 0);
 
-      PVector ta_ = texCoords.get(i).get();
-      PVector tb_ = texCoords.get(i+1).get();
-      PVector tc_ = texCoords.get(i+2).get();
+      PVector ta_ = texCoords.get(i).copy();
+      PVector tb_ = texCoords.get(i+1).copy();
+      PVector tc_ = texCoords.get(i+2).copy();
+      
+      PVector na_ = normals.get(i).copy();
+      PVector nb_ = normals.get(i+1).copy();
+      PVector nc_ = normals.get(i+2).copy();
 
       a_.sub(origine); //substract a to o
       a_.normalize(); //normalize
@@ -517,9 +521,12 @@ class Icosahedron {
       float s = map(a_.y, limiteB, limiteH, 50, 100);
       float b = map(a_.z, limiteB, limiteH, 50, 100);
 
-
+      
+      icosahedron.normal(na_.x, na_.y, na_.z);
       icosahedron.vertex(a_.x, a_.y, a_.z, ta_.x, ta_.y);
+      icosahedron.normal(nb_.x, nb_.y, nb_.z);
       icosahedron.vertex(b_.x, b_.y, b_.z, tb_.x, tb_.y);
+      icosahedron.normal(nc_.x, nc_.y, nc_.z);
       icosahedron.vertex(c_.x, c_.y, c_.z, tc_.x, tc_.y);
     }
     icosahedron.endShape();

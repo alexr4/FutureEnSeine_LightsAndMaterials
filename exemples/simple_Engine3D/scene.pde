@@ -7,8 +7,8 @@ public void renderScene(PGraphics buffer)
   //lights
   //buffer.lights();
   buffer.directionalLight(0, 180, 255, -1, 1, -1);
-  buffer.lightFalloff(1.0, 0.0, 0.0);
   buffer.pointLight(255, 180, 0, -200, 200, 250);
+  buffer.lightFalloff(1.0, 0.0, 0.0);
 
   material(buffer);
   
