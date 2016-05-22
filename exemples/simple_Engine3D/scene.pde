@@ -1,5 +1,7 @@
 public void renderScene(PGraphics buffer) 
 {
+  
+  buffer.background(13);
   drawAxis("RVB", 100, buffer);
 
   //lights

@@ -27,7 +27,6 @@ void setup()
 
 void draw()
 {
-  background(13);
   renderScene(g);
 }
 
