@@ -139,12 +139,12 @@ class Icosahedron {
 
       createIcosahedron();
       println("\ticosahedron textured shape has been created");
-      createNormalShape(new PVector(0, 0, 0));
-      println("\ticosahedron normal shape has been created");
-      createWireframeShape();
-      println("\ticosahedron wire shape has been created");
-      createUvMap();
-      println("\ticosahedron uvMap shape has been created");
+      //createNormalShape(new PVector(0, 0, 0));
+     // println("\ticosahedron normal shape has been created");
+     // createWireframeShape();
+     // println("\ticosahedron wire shape has been created");
+      //createUvMap();
+     // println("\ticosahedron uvMap shape has been created");
 
       //Debug
       println("\t\tfrequency : "+level);

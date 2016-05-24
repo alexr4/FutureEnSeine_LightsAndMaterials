@@ -1,31 +1,40 @@
 public void renderScene(PGraphics buffer) 
 {
-  
+
   buffer.background(13);
   drawAxis("RVB", 100, buffer);
 
   //lights
   //buffer.lights();
-  /*buffer.directionalLight(0, 180, 255, -1, 1, -1);
-  buffer.pointLight(255, 180, 0, -200, 200, 250);
-  buffer.lightFalloff(1.0, 0.0, 0.0);
-  */
+  //buffer.directionalLight(0, 180, 255, -1, 1, -1);
+  //buffer.pointLight(255, 180, 0, -200, 200, 250);
+  //buffer.lightFalloff(1.0, 0.0, 0.0);
+
   buffer.directionalLight(0, 255, 0, 1, 1, -1);
   buffer.directionalLight(255, 0, 0, -1, 1, -1);
 
+  //buffer.directionalLight(255, 255, 255, -1, 1, -1);
+
   material(buffer);
-  
+
   buffer.noStroke();
   //object
   if (complexPoly)
   {
-    if (!wireframe)
+    if (state == 9)
     {
+      buffer.rectMode(CENTER);
+      buffer.rect(0, 0, 500, 500);
     } else
     {
-      buffer.shape(poly.wireframeShape);
+      if (!wireframe)
+      {
+      } else
+      {
+        buffer.shape(poly.wireframeShape);
+      }
+      buffer.shape(poly.icosahedron);
     }
-    buffer.shape(poly.icosahedron);
   } else
   {
     buffer.pushMatrix();
@@ -34,6 +43,13 @@ public void renderScene(PGraphics buffer)
     buffer.box(225);
     buffer.sphere(150);
     buffer.popMatrix();
+  }
+
+  if (state==12)
+  {
+    buffer.resetShader();
+    buffer.noLights();
+    cubemap.displayDynamicCubeMap(buffer);
   }
 }
 

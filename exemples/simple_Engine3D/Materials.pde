@@ -45,28 +45,28 @@ void initMaterial()
 
   //PhongLigthing
   phongLighting = loadShader("shaders/phongLight_frag.glsl", "shaders/phongLight_vert.glsl");
-  phongLighting.set("kd", 1.0, 1.0, 1.0);
-  phongLighting.set("ka", 1.0, 1.0, 1.0);
+  phongLighting.set("kd", 0.25, 0.25, 0.25);
+  phongLighting.set("ka", 0.5, 0.5, 0.5);
   phongLighting.set("ks", 1.0, 1.0, 1.0);
-  phongLighting.set("emissive", 0.1, 0.1, 0.1);
+  phongLighting.set("emissive", 0.0, 0.0, 0.0);
   phongLighting.set("shininess", 100.0);
 
   //PhongLigthing Gamma
   phongLightingGamma = loadShader("shaders/phongLight_GammaCorrection_frag.glsl", "shaders/phongLight_GammaCorrection_vert.glsl");
-  phongLightingGamma.set("kd", 1.0, 1.0, 1.0);
-  phongLightingGamma.set("ka", 1.0, 1.0, 1.0);
+  phongLightingGamma.set("kd", 0.25, 0.25, 0.25);
+  phongLightingGamma.set("ka", 0.5, 0.5, 0.5);
   phongLightingGamma.set("ks", 1.0, 1.0, 1.0);
-  phongLightingGamma.set("emissive", 0.1, 0.1, 0.1);
+  phongLightingGamma.set("emissive", 0.0, 0.0, 0.0);
   phongLightingGamma.set("shininess", 100.0);
 
-   bump = loadShader("shaders/bump_frag.glsl", "shaders/bump_vert.glsl");
-   bump.set("kd", 1.0, 1.0, 1.0);
-   bump.set("ka", 1.0, 1.0, 1.0);
-   bump.set("ks", 1.0, 1.0, 1.0);
-   bump.set("emissive", 0.1, 0.1, 0.1);
-   bump.set("shininess", 100.0);
-   bump.set("bumpmap", loadImage("textures/normalmap.jpg"));
-   bump.set("minNormalEmissive", 0.5);
+  bump = loadShader("shaders/bump_frag.glsl", "shaders/bump_vert.glsl");
+  bump.set("kd", 1.0, 1.0, 1.0);
+  bump.set("ka", 1.0, 1.0, 1.0);
+  bump.set("ks", 1.0, 1.0, 1.0);
+  bump.set("emissive", 0.1, 0.1, 0.1);
+  bump.set("shininess", 1.0);
+  bump.set("bumpmap", loadImage("textures/09_normalmap.png"));
+  bump.set("minNormalEmissive", 0.05);
 
   //displacement mapping;
   displacement = loadShader("shaders/displacement_frag.glsl", "shaders/displacement_vert.glsl");
@@ -103,7 +103,7 @@ void material(PGraphics buffer)
 {
   if (state ==0)
   {
-      poly.icosahedron.setTexture(null);
+    poly.icosahedron.setTexture(null);
     buffer.background(13);
     buffer.resetShader();
     //light Properties
@@ -135,7 +135,7 @@ void material(PGraphics buffer)
     {
       // displacement.set("displaceStrength", (float) mouseX);
     }
-    if(state == 12)
+    if (state == 12)
     {
       sendCameraMatrixTo(environment);
     }

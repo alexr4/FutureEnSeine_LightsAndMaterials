@@ -4,17 +4,21 @@
 precision mediump float;
 precision mediump int;
 #endif
+const float zero_float = 0.0;
+const float one_float = 1.0;
 
 uniform int lightCount;
 uniform vec3 lightNormal[8];
 uniform vec4 lightPosition[8];
 uniform vec3 lightDiffuse[8]; // diffuse is the color element of the light
+uniform vec3 lightFalloff[8];
 
 in vec4 vertColor;
 in vec3 ecNormal; //eyeCoordinates normalized
 in vec3 ecVertex;//eyeCoordinates
 in vec3 lightDir[8];
 in vec4 vertTexCoord;
+in float isDirectionnal[8];
 
 //material
 uniform vec3 kd;//Diffuse reflectivity
@@ -50,6 +54,14 @@ vec3 ads(vec3 dir, vec3 color)
 	return color * intensity * (ka + kd * max(dot(s, n), 0.0) + ks * pow(max(dot(h, n), 0.0), shininess));
 }
 
+float falloffFactor(vec3 lightPos, vec3 vertPos, vec3 coeff) {
+  vec3 lpv = lightPos - vertPos;
+  vec3 dist = vec3(one_float);
+  dist.z = dot(lpv, lpv);
+  dist.y = sqrt(dist.z);
+  return one_float / dot(dist, coeff);
+}
+
 void main()
 {
 	//normal map
@@ -64,7 +76,14 @@ void main()
 	for(int i = 0 ; i <lightCount ; i++) 
 	{
 	  vec3 direction = normalize(lightDir[i]);
-	  lightColor += vec4(ads(direction, lightDiffuse[i].xyz), 1.0);
+	  float falloff = 0.0;
+	  if(isDirectionnal[i] == 1.0)
+	  {
+	  	falloff = one_float;
+	  }else{
+	  	falloff = falloffFactor(lightPosition[i].xyz, ecVertex, lightFalloff[i]);
+	  }
+	  lightColor += vec4(ads(direction, lightDiffuse[i].xyz), 1.0) * falloff;
 	  intensityNormalMap += max(dot(normNM, lightDir[i]), minNormalEmissive);
 	}
 	intensityNormalMap = intensityNormalMap/lightCount;

@@ -97,7 +97,7 @@ void main()
 	  
 	  lightColor += vec4(ads(direction, lightDiffuse[i].xyz), 1.0) * falloff;
 	}
-	vec4 final_lightColor =  toLinear(vec4(emissive, 1.0))  +  (toLinear(lightColor) * toLinear(vertColor));
+	vec4 final_lightColor =  vec4(emissive, 1.0)  +  (lightColor * vertColor);
 
 	fragColor = toGamma(final_lightColor);
 	//fragColor = gl_FrontFacing ? toGamma(final_lightColor) : toGamma(final_lightColor);
