@@ -140,11 +140,11 @@ class Icosahedron {
       createIcosahedron();
       println("\ticosahedron textured shape has been created");
       //createNormalShape(new PVector(0, 0, 0));
-     // println("\ticosahedron normal shape has been created");
-     // createWireframeShape();
-     // println("\ticosahedron wire shape has been created");
+      // println("\ticosahedron normal shape has been created");
+      // createWireframeShape();
+      // println("\ticosahedron wire shape has been created");
       //createUvMap();
-     // println("\ticosahedron uvMap shape has been created");
+      // println("\ticosahedron uvMap shape has been created");
 
       //Debug
       println("\t\tfrequency : "+level);
@@ -497,7 +497,7 @@ class Icosahedron {
       PVector ta_ = texCoords.get(i).copy();
       PVector tb_ = texCoords.get(i+1).copy();
       PVector tc_ = texCoords.get(i+2).copy();
-      
+
       PVector na_ = normals.get(i).copy();
       PVector nb_ = normals.get(i+1).copy();
       PVector nc_ = normals.get(i+2).copy();
@@ -521,7 +521,6 @@ class Icosahedron {
       float s = map(a_.y, limiteB, limiteH, 50, 100);
       float b = map(a_.z, limiteB, limiteH, 50, 100);
 
-      
       icosahedron.normal(na_.x, na_.y, na_.z);
       icosahedron.vertex(a_.x, a_.y, a_.z, ta_.x, ta_.y);
       icosahedron.normal(nb_.x, nb_.y, nb_.z);

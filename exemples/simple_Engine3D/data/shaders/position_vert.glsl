@@ -1,4 +1,5 @@
 uniform mat4 transform;
+uniform mat4 modelview;
 
 in vec4 vertex;
 
@@ -6,7 +7,8 @@ out vec4 vertColor;
 
 void main()
 {
-	vertColor = vec4(vertex.xyz, 1);
+	vec4 pos = modelview * vertex;
+	vertColor = vec4(pos.xyz, 1);
 
 	gl_Position = transform * vertex;
 }

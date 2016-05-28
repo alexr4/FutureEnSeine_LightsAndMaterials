@@ -1,27 +1,42 @@
 public void renderScene(PGraphics buffer) 
 {
 
+  buffer.resetShader();
   buffer.background(13);
-  drawAxis("RVB", 100, buffer);
+  drawAxis("RVB", 250, buffer);
 
   //lights
   //buffer.lights();
-  //buffer.directionalLight(0, 180, 255, -1, 1, -1);
-  //buffer.pointLight(255, 180, 0, -200, 200, 250);
-  //buffer.lightFalloff(1.0, 0.0, 0.0);
 
-  buffer.directionalLight(0, 255, 0, 1, 1, -1);
-  buffer.directionalLight(255, 0, 0, -1, 1, -1);
+  buffer.pushMatrix();
+  buffer.noLights();
+  buffer.rotateX(millis() * - 0.0005);
+  buffer.pushStyle();
+  buffer.translate(0, 0, 500);//-200, 200, 250);
+  buffer.noStroke();
+  buffer.fill(255, 180, 0);
+  buffer.sphere(25);
+  buffer.popStyle();
 
-  //buffer.directionalLight(255, 255, 255, -1, 1, -1);
+
+
+  buffer.pointLight(255, 180, 0, 0, 0, 500);//-200, 200, 250);
+  buffer.lightFalloff(1.0, 0.0, 0.0);
+
+  buffer.popMatrix();
+
+  buffer.directionalLight(0, 180, 255, -1, 1, -1);
+
 
   material(buffer);
 
   buffer.noStroke();
+  buffer.pushMatrix();
+  //buffer.rotateY(millis() * 0.0001);
   //object
   if (complexPoly)
   {
-    if (state == 9)
+    if (state == 10)
     {
       buffer.rectMode(CENTER);
       buffer.rect(0, 0, 500, 500);
@@ -35,17 +50,40 @@ public void renderScene(PGraphics buffer)
       }
       buffer.shape(poly.icosahedron);
     }
+  } else if (state == 14)
+  {
+    buffer.pushStyle();
+    buffer.strokeWeight(100);
+    buffer.strokeCap(SQUARE);
+    buffer.stroke(255);
+    for (int i=0; i<nbCube; i++)
+    {
+      PVector pos = positionList.get(i);
+
+      buffer.point(pos.x, pos.y, pos.z);
+    }
+    buffer.popStyle();
   } else
   {
-    buffer.pushMatrix();
-    buffer.rotateY(HALF_PI/2);
-    buffer.noStroke();
-    buffer.box(225);
-    buffer.sphere(150);
-    buffer.popMatrix();
-  }
+    for (int i=0; i<nbCube; i++)
+    {
+      PVector rot = rotationList.get(i);
+      PVector pos = positionList.get(i);
 
-  if (state==12)
+      buffer.pushMatrix();
+      buffer.translate(pos.x, pos.y, pos.z);
+      buffer.rotateX(rot.x);
+      buffer.rotateY(rot.y);
+      buffer.rotateZ(rot.z);
+      buffer.noStroke();
+      buffer.box(size);
+      buffer.sphere(size * 0.65);
+      buffer.popMatrix();
+    }
+  }
+  buffer.popMatrix();
+
+  if (state==13)
   {
     buffer.resetShader();
     buffer.noLights();

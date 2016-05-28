@@ -1,19 +1,22 @@
 ArrayList<PShader> shaderList;
 
-PShader depth;
-PShader stencil;
-PShader diffuse;
-PShader normals;
-PShader position;
-PShader rim; //fresnel
-PShader phongLighting; 
-PShader phongLightingGamma; 
-PShader bump; //add directionnal light
-PShader displacement; 
-PShader iridescent;
-PShader environment;
+PShader depth; //1
+PShader backFaceDepth; //2
+PShader stencil; //3
+PShader diffuse; //4
+PShader normals; //5
+PShader position; //6
+PShader rim; //fresnel 7
+PShader phongLighting;  //8 
+PShader phongLightingGamma; //9
+PShader bump; //add directionnal light 10
+PShader displacement; //11
+PShader iridescent; //12
+PShader environment; //13
+PShader billboard;
 
 PImage uvChecker;
+PImage cloud;
 
 void initMaterial()
 {
@@ -23,6 +26,10 @@ void initMaterial()
   depth = loadShader("shaders/depth_frag.glsl", "shaders/depth_vert.glsl");
   depth.set("near", 0.0);
   depth.set("far", 1000.0);
+
+  backFaceDepth = loadShader("shaders/backFaceDepth_frag.glsl", "shaders/backFaceDepth_vert.glsl"); 
+  backFaceDepth.set("near", 0.0);
+  backFaceDepth.set("far", 1000.0);
 
   //stencilmap shader
   stencil = loadShader("shaders/stencil_frag.glsl", "shaders/stencil_vert.glsl");
@@ -65,8 +72,8 @@ void initMaterial()
   bump.set("ks", 1.0, 1.0, 1.0);
   bump.set("emissive", 0.1, 0.1, 0.1);
   bump.set("shininess", 1.0);
-  bump.set("bumpmap", loadImage("textures/09_normalmap.png"));
-  bump.set("minNormalEmissive", 0.05);
+  bump.set("bumpmap", loadImage("textures/normalmap_04.png"));
+  bump.set("minNormalEmissive", 0.0);
 
   //displacement mapping;
   displacement = loadShader("shaders/displacement_frag.glsl", "shaders/displacement_vert.glsl");
@@ -81,19 +88,27 @@ void initMaterial()
   environment = loadShader("shaders/environment_ChromaDisp_frag.glsl", "shaders/environment_ChromaDisp_vert.glsl");
   environment.set("cubemap", cubemap.location);
 
-  shaderList.add(null);
-  shaderList.add(depth);
-  shaderList.add(stencil);
-  shaderList.add(diffuse);
-  shaderList.add(normals);
-  shaderList.add(position);
-  shaderList.add(rim);
-  shaderList.add(phongLighting);
-  shaderList.add(phongLightingGamma);
-  shaderList.add(bump);
-  shaderList.add(displacement);
-  shaderList.add(iridescent);
-  shaderList.add(environment);
+  //billboard
+  cloud = loadImage("textures/cloud.png");
+  billboard = loadShader("shaders/billboard_frag.glsl", "shaders/billboard_vert.glsl");
+  billboard.set("sprite", cloud);
+  billboard.set("weight", 100.0);
+
+  shaderList.add(null); //0
+  shaderList.add(depth); //1
+  shaderList.add(backFaceDepth); //2
+  shaderList.add(stencil); //3
+  shaderList.add(diffuse); //4
+  shaderList.add(normals); //5
+  shaderList.add(position); //6
+  shaderList.add(rim); //7
+  shaderList.add(phongLighting); //8
+  shaderList.add(phongLightingGamma); //9
+  shaderList.add(bump); //10
+  shaderList.add(displacement); //11
+  shaderList.add(iridescent); //12
+  shaderList.add(environment); //13
+  shaderList.add(billboard); //14
 
 
   maxState = shaderList.size()-1;
@@ -116,30 +131,36 @@ void material(PGraphics buffer)
     buffer.ambient(255, 0, 0);
     buffer.emissive(0, 25, 25);
   } else {
-    if (state == 1)
+    if (state == 1 || state == 2)
     {
       buffer.background(255);
-    } else if (state == 2)
-    {
-      buffer.background(0);
     } else if (state == 3)
     {
+      buffer.background(0);
+    } else if (state == 4)
+    {
       poly.icosahedron.setTexture(uvChecker);
-      //diffuse.set("tiling", norm(mouseX, 0, width), norm(mouseY, 0, height));
-    }
-    if (state == 6)
+      diffuse.set("tiling", norm(mouseX, 0, width), norm(mouseY, 0, height));
+    } else if (state == 7)
     {
-      //rim.set("rimPower", norm(mouseX, 0, width));
-    }
-    if (state == 10)
+      rim.set("rimPower", norm(mouseX, 0, width));
+    } else if (state == 10)
     {
-      // displacement.set("displaceStrength", (float) mouseX);
-    }
-    if (state == 12)
+      //bump.set("minNormalEmissive", norm(mouseX, 0, width) * 0.5);
+    } else if (state == 11)
+    {
+      displacement.set("displaceStrength", (float) mouseX);
+    } else if (state == 13)
     {
       sendCameraMatrixTo(environment);
     }
 
-    buffer.shader(shaderList.get(state));
+    if (state == 14)
+    {
+      buffer.shader(shaderList.get(state), POINTS);
+    } else
+    {
+      buffer.shader(shaderList.get(state));
+    }
   }
 }

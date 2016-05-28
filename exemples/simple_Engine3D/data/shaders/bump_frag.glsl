@@ -67,6 +67,7 @@ void main()
 	//normal map
 	vec4 normalTexture = texture2D(bumpmap, vertTexCoord.st);
 	vec3 normalMap = vec3(normalTexture.rgb) * 2.0 - 1.0;
+	normalMap.g = 1.0 - normalMap.g; //invert y axis
 	vec3 normNM = normalize(normalMap);
 
 	//lights

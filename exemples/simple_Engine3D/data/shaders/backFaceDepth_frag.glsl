@@ -22,7 +22,16 @@ void main()
 {
 	//depth informations
 	float depth = smoothstep(near, far, gl_FragCoord.z / gl_FragCoord.w);
+
 	
-	fragColor = vec4(depth, depth, depth, 1.0);//packDepth(depth); if you want to encode depth into 16Bit texture and hav more than 255 level of depth
+	//fragColor = vec4(depth, depth, depth, 1.0);//packDepth(depth); if you want to encode depth into 16Bit texture and hav more than 255 level of depth
 	//fragColor = gl_FrontFacing ? mix(nearColor, farColor, depth); : mix(nearColor, farColor, depth);
+	if(gl_FrontFacing)
+	{
+		discard;
+	}
+	else
+	{
+		fragColor = vec4(depth, depth, depth, 1.0);
+	}
 }

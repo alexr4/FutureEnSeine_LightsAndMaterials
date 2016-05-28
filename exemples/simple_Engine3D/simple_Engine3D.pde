@@ -1,4 +1,5 @@
 import peasy.*;
+import java.util.*;
 
 PeasyCam cam;
 
@@ -6,6 +7,11 @@ PeasyCam cam;
 PImage diffuseTex;
 Icosahedron poly;
 CubeMap cubemap;
+int nbCube = 50;
+int radius = 200;
+int size = 50;
+ArrayList<PVector> rotationList;
+ArrayList<PVector> positionList;
 
 int state;
 int maxState;
@@ -17,13 +23,22 @@ boolean wireframe;
 void setup()
 {
   //fullScreen(P3D);
-  size(1920, 1080, P3D);
+  size(1280, 720, P3D);
   cam = new PeasyCam(this, 0, 0, 0, 500);
   
   cubemap = new CubeMap(1.0);
   initMaterial();
   diffuseTex = loadImage("textures/diffuse.jpg");
   poly = new   Icosahedron(8, 150, diffuseTex);
+  
+  positionList = new ArrayList<PVector>();
+  rotationList = new ArrayList<PVector>();
+  for(int i=0; i<nbCube; i++)
+  {
+    rotationList.add(new PVector(random(TWO_PI), random(PI), random(PI)));
+    positionList.add(new PVector(random(-radius, radius), random(-radius, radius), map(i, 0, nbCube, -radius, radius)));
+  }
+  
 }
 
 void draw()
